@@ -1,1 +1,3 @@
-# Random-processes
+# Random processes
+
+- 17.02.24: Добавлены задачи про компактные классы
