@@ -1,0 +1,273 @@
+\section{Процесс восстановления}
+
+\begin{definition}
+    Пусть $\{\xi_n\}_{n \in \N}$ -- независимые одинаково распределённые случайные величины, $\xi_n \ge 0$. Процессом восстановления называется случайный процесс
+    \[
+        X_t = \sup \set{n \in \N \cup \{0\} \colon \sum_{k=1}^n \xi_k \le t},\ t \in [0, +\infty)
+    \]
+    Здесь можно разрешить и $\xi_n$, и $X_t$ принимать значение $+\infty$.
+\end{definition}
+
+\begin{note}
+    Это определение имеет физическую интерпретацию. Пусть есть некоторый прибор, $\xi$ -- случайная величина его времени работы, $\xi$ неотрицательна. Каждый раз, когда прибор ломается, мы его чиним и запускаем заново, таким образом, появляется последовательность $\xi_1, \xi_2, \dots$ случайных величин его времени работы, разумно предположить, что $\xi_1, \xi_2, \dots$ независимы и одинаково распределены. Тогда процесс восстановления $X_t$ показывает, сколько раз мы чинили прибор к моменту времени $t$.
+
+    \begin{tikzpicture}[scale=1.5]
+        % оси координат
+        \draw[->] (0,0) -- (10,0) node[right] {$t$};
+        \draw[->] (0,0) -- (0,4) node[above] {$X_t$};
+
+        % подписи по вертикальной оси
+        \foreach \y in {0,1,2,3} {
+            \draw (-0.1,\y) -- (0.1,\y) node[left,xshift=-8pt] {\y};
+        }
+    
+        % график
+        \draw[red, thick] (0,0) -- (3.4,0);
+        \draw[red, thick] (3.4,1) -- (5,1);
+        \draw[red, thick] (5,2) -- (6.8,2);
+        \draw[red, thick] (6.8,3) -- (9.4,3);
+    
+        % точки
+        \filldraw [red] (0,0) circle (2pt);
+        \draw [red] (3.4,0) circle (2pt);
+        \filldraw [red] (3.4,1) circle (2pt);
+        \draw [red] (5,1) circle (2pt);
+        \filldraw [red] (5,2) circle (2pt);
+        \draw [red] (6.8,2) circle (2pt);
+        \filldraw [red] (6.8,3) circle (2pt);
+        \draw [red] (9.4,3) circle (2pt);
+    
+        % фигурные скобки с подписями
+        \draw [decorate,decoration={brace,mirror,amplitude=5pt}]
+        (0.1,-0.2) -- (3.3,-0.2) node [black,midway,below,yshift=-10pt]
+        {$\xi_1$};
+        \draw [decorate,decoration={brace,mirror,amplitude=5pt}]
+        (3.5,-0.2) -- (4.9,-0.2) node [black,midway,below,yshift=-10pt]
+        {$\xi_2$};
+        \draw [decorate,decoration={brace,mirror,amplitude=5pt}]
+        (5.1,-0.2) -- (6.7,-0.2) node [black,midway,below,yshift=-10pt]
+        {$\xi_3$};
+        \draw [decorate,decoration={brace,mirror,amplitude=5pt}]
+        (6.9,-0.2) -- (9.3,-0.2) node [black,midway,below,yshift=-10pt]
+        {$\xi_4$};
+    \end{tikzpicture}
+\end{note}
+
+\begin{problem}
+    Пусть $(X_t,\ t \ge 0)$ -- процесс восстановления, построенный по н.о.р.с.в. $\xi_n \ge 0$, пусть $\xi_n < +\infty$ почти наверное. Доказать, что:
+    \[
+        P\ps{\omega \colon \lim_{t \to +\infty} X_t = +\infty} = 1
+    \]
+\end{problem}
+
+\begin{proof}~
+    \begin{itemize}
+        \item Так как $X_t = X_t(\omega)$ -- монотонная по $t$ функция, то при всех $\omega$ существует $\lim\limits_{t \to +\infty} X_t$, конечный или бесконечный. В таком случае рассмотрим множество:
+        \[
+            \set{\omega \colon \lim_{t \to +\infty} X_t < +\infty} = \bigcup_{k=0}^\infty \set{\omega \colon \lim_{t \to +\infty} X_t \le k}
+        \]
+
+        В силу вложенности множеств из последнего объединения, а также непрерывности вероятностной меры:
+        \[
+            P\ps{\omega \colon \lim_{t \to +\infty} X_t < +\infty} = \lim_{k \to \infty} P\ps{\omega \colon \lim_{t \to +\infty} X_t \le k} 
+        \]
+
+        Таким образом, необходимо и достаточно доказать, что:
+        \[
+            \lim_{k \to \infty} P\ps{\omega \colon \lim_{t \to +\infty} X_t \le k} = 0
+        \]
+
+        \item Так как $\xi_n < +\infty$ п.н., то и $\sum\limits_{k=1}^n \xi_k < +\infty$ п.н., отсюда получаем:
+        \begin{multline*}
+            P\ps{\omega \colon \lim_{t \to +\infty} X_t \le k} = P\ps{\omega \colon \forall t \ge 0 \ X_t \le k} =
+            \\
+            = P\ps{\omega \colon \forall t \ge 0 \ \xi_1 + \dots + \xi_{k+1} > t} = P\ps{\omega \colon \xi_1 + \dots + \xi_{k+1} = +\infty} = 0
+        \end{multline*}
+    \end{itemize}
+\end{proof}
+
+\begin{problem}
+    Пусть $(X_t,\ t \ge 0)$ -- процесс восстановления, построенный по независимым, но не обязательно одинаково распределённым случайным величинам $\{\xi_n\}_{n \in \N}$, здесь все $\xi_n \ge 0$. Привести пример такого процесса $X_t$, что:
+    \begin{enumerate}
+        \item $P\ps{\lim\limits_{t \to a} X_t = +\infty} > 0$, то есть процесс $X_t$ уходит на бесконечность за конечное время с положительной вероятностью
+
+        \item $P\ps{\lim\limits_{t \to +\infty} X_t < +\infty} > 0$, то есть процесс $X_t$ не уходит на бесконечность даже за бесконечное время с положительной вероятностью
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}~
+    \begin{enumerate}
+        \item Рассмотрим независимые случайные величины $\xi_k \sim U\sbr{0, \frac{1}{2^k}}$, построим на их основе процесс восстановления $X_t$. В таком случае:
+        \[
+            P\ps{\lim\limits_{t \to 1} X_t = +\infty} = P\ps{\sup \set{n \colon \sum_{k=1}^n \xi_k < 1} = +\infty} = P\ps{\forall n \ \sum_{k=1}^n \xi_k < 1} = 1
+        \]
+
+        \item Сначала заметим, что если $\xi_k < +\infty$ почти наверное, то такое невозможно. Действительно, тогда и $\sum_{k=1}^n \xi_k < +\infty$ почти наверное, и без каких-либо изменений проходит рассуждение из предыдущей задачи:
+        \begin{multline*}
+            P\ps{\omega \colon \lim_{t \to +\infty} X_t < +\infty} = P\ps{\bigcup_{k=0}^\infty \set{\omega \colon \lim_{t \to +\infty} X_t \le k}} =
+            \\
+            = \lim_{k \to \infty} P\ps{\omega \colon \lim_{t \to +\infty} X_t \le k} = \lim_{k \to \infty} P\ps{\omega \colon \forall t \ge 0 \ X_t \le k} =
+            \\
+            = \lim_{k \to \infty} P\ps{\omega \colon \forall t \ge 0 \ \xi_1 + \dots + \xi_{k+1} > t} =
+            \\
+            = \lim_{k \to \infty} P\ps{\omega \colon \xi_1 + \dots + \xi_{k+1} = +\infty} = \lim_{k \to \infty} 0 = 0
+        \end{multline*}
+
+        Если же ограничения на конечность случайных величин нет, то возьмём независимые случайные величины $\xi_k$, такие, что $P(\xi_k = 1) = P(\xi_k = +\infty) = \frac{1}{2}$, в принципе, можно было бы взять и $\xi_k \equiv +\infty$, но некоторые определения процесса восстановления такие случаи запрещают. Построим процесс восстановления $X_t$, получим:
+        \begin{multline*}
+            P\ps{\omega \colon \lim_{t \to +\infty} X_t < +\infty} \ge P\ps{\omega \colon \lim_{t \to +\infty} X_t = 0} = P\ps{\omega \colon \forall t \ge 0 \ X_t = 0} =
+            \\
+            = P(\omega \colon \forall t \ge 0 \ \xi_1 > t) = P(\omega \colon \xi_1 = +\infty) = \frac{1}{2}
+        \end{multline*}
+    \end{enumerate}
+\end{solution}
+
+\begin{note}
+    Для процесса восстановления $(X_t,\ t \ge 0)$ можно записать удобные теоретико-множественные равенства, которыми, на самом деле, уже пользовались:
+    \begin{align*}
+        & \{\omega \colon X_t \ge n\} = \set{\omega \colon \sum_{k=1}^n \xi_k \le t}
+        \\
+        & \{\omega \colon X_t = n\} = \set{\omega \colon \sum_{k=1}^n \xi_k \le t \text{ и } \sum_{k=1}^{n+1} \xi_k > t}
+    \end{align*}
+\end{note}
+
+\begin{problem}
+    Пусть $\{\xi_n\}_{n \in \N}$, $\xi_n \sim Exp(\lambda)$ -- независимые одинаково распределённые случайные величины, обозначим $S_n = \xi_1 + \dots + \xi_n$. Пусть $(N_t,\ t \ge 0)$ -- процесс восстановления, построенный по этим случайным величинам. Обозначим также
+    \begin{align*}
+        & U_t = t - S_{N_t} \text{ (<<недоскок>>, $S_{N_t}$ -- время последнего выхода из строя перед $t$)}
+        \\
+        & V_t = S_{N_t+1} - t \text{ (<<перескок>>, $S_{N_t+1}$ -- время первого выхода из строя после $t$)}
+    \end{align*}
+
+    В задаче требуется:
+    \begin{enumerate}
+        \item Вычислить вероятность $P(V_t > v,\ U_t > u)$
+        \item Доказать независимость $U_t$ и $V_t$, а также $V_t \sim Exp(\lambda)$
+        \item Вычислить функцию распределения $U_t$ и $\E U_t$
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+    Начнём с того, что определение $U_t$ и $V_t$ корректно, то есть, что $P(N_t = +\infty) = 0$, в таком случае почти наверное $N_t$ конечно, тогда определены $S_{N_t}$ и $S_{N_t+1}$, а, следовательно, через них определены $U_t$ и $V_t$.
+
+    Посмотрим, какое распределение имеет $S_n$, нам это ещё много где пригодится:
+    \begin{align*}
+        & \xi_1, \dots, \xi_n \sim Exp(\lambda) = \Gamma(\lambda, 1)
+        \\
+        & \xi_1, \dots, \xi_n \text{ независимы}
+        \\
+        & \Downarrow
+        \\
+        & S_n = \xi_1 + \dots + \xi_n \sim \Gamma(\lambda, n)
+    \end{align*}
+
+    Теперь с помощью этого знания докажем корректность, зафиксируем $t \ge 0$:
+    \begin{multline*}
+        P(N_t = +\infty) = P(\forall n \ S_n \le t) \le P(S_n \le t) = \int\limits_{-\infty}^t \frac{\lambda^n x^{n-1}}{\Gamma(n)} e^{-\lambda x} I\{x > 0\} dx =
+        \\
+        = \frac{\lambda^n}{\Gamma(n)} \int\limits_0^t x^{n-1} e^{-\lambda x} dx \le \frac{\lambda^n}{\Gamma(n)} \int\limits_0^t x^{n-1} \cdot 1 \cdot dx = \frac{\lambda^n}{\Gamma(n)} \frac{t^n}{n} = \frac{(\lambda t)^n}{n!} \xrightarrow[n \to \infty]{} 0
+    \end{multline*}
+    
+    После этого найдём вероятность $P(V_t > v,\ U_t > u)$. Сразу оговорим, что так как $U_t \ge 0$ и $V_t \ge 0$, то имеет смысл рассматривать только неотрицательные $u$ и $v$. Помимо этого, так как $U_t \le t$, то имеет смысл рассматривать только $u < t$.
+    
+    Для этого не очень умно распишем требуемую вероятность:
+    \begin{multline*}
+        P(V_t > v,\ U_t > u) = P(S_{N_t+1} - t > v,\ t - S_{N_t} > u) = P\ps{\sum_{i=1}^{N_t+1} \xi_i > t + v,\ \sum_{i=1}^{N_t} \xi_i < t - u} =
+        \\
+        = P\ps{\bigsqcup_{k=0}^\infty \set{\sum_{i=1}^{k+1} \xi_i > t + v,\ \sum_{i=1}^{k} \xi_i < t - u,\ N_t = k}} =
+        \\
+        = \sum_{k=0}^{\infty} P\ps{\sum_{i=1}^{k+1} \xi_i > t + v,\ \sum_{i=1}^{k} \xi_i < t - u,\ N_t = k} = \sum_{k=0}^{\infty} P\ps{S_{k+1} > t + v,\ S_k < t - u,\ N_t = k}
+    \end{multline*}
+
+    Так как $N_t = k \Lra S_k \le t \text{ и } S_{k+1} > t$, то можем переписать вероятность в виде:
+    \begin{multline*}
+        P(V_t > v,\ U_t > u) = \sum_{k=0}^{\infty} P\ps{S_{k+1} > t + v,\ S_k < t - u,\ S_{k+1} > t,\ S_k \le t} =
+        \\
+        = \sum_{k=0}^{\infty} P\ps{S_{k+1} > t + v,\ S_k < t - u} = \sum_{k=0}^{\infty} P\ps{S_k + \xi_{k+1} > t + v,\ S_k < t - u}
+    \end{multline*}
+
+    Сначала рассмотрим $k \ge 1$. Заметим, что мы много знаем о распределении $S_k$ и $\xi_{k+1}$. Действительно, так как $S_k = \xi_1 + \dots + \xi_k$, а $\xi_1, \xi_2, \dots$ независимы, то $S_k$ и $\xi_{k+1}$ независимы. Помимо этого, мы знаем, что $S_k \sim \Gamma(\lambda, k)$, $\xi_{k+1} \sim Exp(\lambda)$.
+
+    Оба распределения имеют плотность, распределения независимы, тогда можем расписать совместную вероятность через двойной интеграл:
+    \[
+        P\ps{S_k + \xi_{k+1} > t + v,\ S_k < t - u} = \iint\limits_{\substack{x + y > t + v \\ x < t - u}} \frac{\lambda^k x^{k-1}}{\Gamma(k)} e^{-\lambda x} I\{x > 0\} \lambda e^{-\lambda y} I\{y > 0\} dx dy
+    \]
+
+    Теперь применяем теорему Фубини, получаем повторный интеграл:
+    \[
+        P\ps{S_k + \xi_{k+1} > t + v,\ S_k < t - u} = \int\limits_{-\infty}^{t-u} dx I\{x > 0\} \int\limits_{t+v-x}^{+\infty} dy I\{y > 0\} \frac{\lambda^k x^{k-1}}{\Gamma(k)} e^{-\lambda x} \lambda e^{-\lambda y}
+    \]
+
+    После этого избавимся от индикаторов, $I\{x > 0\}$ перенесём в пределы интегрирования, $I\{y > 0\}$ не нужен, так как $x < t-u$, из-за чего $y > t+v-x \ge t-u-x > 0$:
+    \[
+        P\ps{S_k + \xi_{k+1} > t + v,\ S_k < t - u} = \int\limits_{0}^{t-u} dx \int\limits_{t+v-x}^{+\infty} dy \frac{\lambda^k x^{k-1}}{\Gamma(k)} e^{-\lambda x} \lambda e^{-\lambda y}
+    \]
+
+    Осталось уверенно проинтегрировать:
+    \begin{multline*}
+        P\ps{S_k + \xi_{k+1} > t + v,\ S_k < t - u} = \frac{\lambda^{k+1}}{\Gamma(k)} \int\limits_{0}^{t-u} dx \cdot x^{k-1} e^{-\lambda x} \int\limits_{t+v-x}^{+\infty} dy \cdot e^{-\lambda y} =
+        \\
+        = \frac{\lambda^{k+1}}{\Gamma(k)} \int\limits_{0}^{t-u} dx \cdot x^{k-1} e^{-\lambda x} \ps{\frac{e^{-\lambda y}}{-\lambda}} \Biggr|_{t+v-x}^{+\infty} = \frac{\lambda^{k+1}}{\Gamma(k)} \int\limits_{0}^{t-u} dx \cdot x^{k-1} e^{-\lambda x} \frac{e^{-\lambda (t+v-x)}}{\lambda} =
+        \\
+        = \frac{\lambda^{k}}{\Gamma(k)} \int\limits_{0}^{t-u} x^{k-1} e^{-\lambda (t+v)} dx = \frac{\lambda^{k}}{\Gamma(k)} e^{-\lambda (t+v)} \ps{\frac{x^k}{k}} \Biggr|_{0}^{t-u} =
+        \\
+        = \frac{\lambda^{k}}{\Gamma(k)} e^{-\lambda (t+v)} \frac{(t-u)^k}{k} = e^{-\lambda (t+v)} \frac{(\lambda(t-u))^k}{k!}
+    \end{multline*}
+
+    Вывели формулу для $k \ge 1$. Теперь поймём, что при $k = 0$ эта формула тоже верна. Действительно, так как $u < t$, получим:
+    \begin{multline*}
+        P\ps{S_k + \xi_{k+1} > t + v,\ S_k < t - u} = P\ps{S_0 + \xi_1 > t + v,\ S_0 < t - u} =
+        \\
+        = P\ps{\xi_1 > t + v,\ u < t} = P\ps{\xi_1 > t + v} = \int\limits_{t+v}^{+\infty} \lambda e^{-\lambda x} I\{x > 0\} dx = \int\limits_{t+v}^{+\infty} \lambda e^{-\lambda x} dx =
+        \\
+        = \lambda \ps{\frac{e^{-\lambda x}}{-\lambda}} \Biggr|_{t+v}^{+\infty} = \lambda \frac{e^{-\lambda (t+v)}}{\lambda} = e^{-\lambda (t+v)} = e^{-\lambda (t+v)} \frac{(\lambda(t-u))^k}{k!}
+    \end{multline*}
+
+    Теперь подставим полученные результаты в формулу для искомой вероятности:
+    \begin{multline*}
+        P(V_t > v,\ U_t > u) = \sum_{k=0}^{\infty} P\ps{S_k + \xi_{k+1} > t + v,\ S_k < t - u} = \sum_{k=0}^\infty e^{-\lambda (t+v)} \frac{(\lambda(t-u))^k}{k!} =
+        \\
+        = e^{-\lambda (t+v)} \sum_{k=0}^\infty \frac{(\lambda(t-u))^k}{k!} = e^{-\lambda (\cancel{t}+v)} e^{\lambda (\cancel{t}-u)} = e^{-\lambda u} e^{-\lambda v}
+    \end{multline*}
+
+    Таким образом, получили, что при $0 \le u < t$, $0 \le v$ выполнено:
+    \[
+        P(V_t > v,\ U_t > u) = e^{-\lambda u} e^{-\lambda v}
+    \]
+
+    Иными словами, при $u \ge 0$, $v \ge 0$ выполнено:
+    \[
+        P(V_t > v,\ U_t > u) = e^{-\lambda u} I\{u < t\} \cdot e^{-\lambda v} 
+    \]
+
+    Так как экспоненциальное распределение абсолютно непрерывно, то при $t > 0$ выполнено $P(V_t = 0) = 0$, $P(U_t = 0) = 0$, поэтому, взяв $u = 0$ и $v = 0$, получим:
+    \begin{align*}
+        & P(V_t > v) = e^{-\lambda v},\ v \ge 0
+        \\
+        & P(U_t > u) = e^{-\lambda u} I\{u < t\},\ u \ge 0
+    \end{align*}
+
+    Отсюда понятно, почему $U_t$ и $V_t$ независимы, у нас был критерий, что случайные величины независимы тогда и только тогда, когда их совместная функция распределения распадается на произведение функций распределения самих случайных величин. Здесь знак больше вместо знака меньше, строгий вместо нестрогого, но понятно, что это не очень важно.
+
+    Отсюда также мгновенно получаются функции распределения случайных величин:
+    \begin{align*}
+        & P(V_t \le v) = (1 - e^{-\lambda v}) I\{v \ge 0\} \ \Ra \ V_t \sim Exp(\lambda)
+        \\
+        & P(U_t \le u) = \System{
+            & 0,\ u < 0,
+            \\
+            & 1 - e^{-\lambda u},\ 0 \le u < t,
+            \\
+            & 1,\ u \ge t
+        }
+    \end{align*}
+
+    Осталось посчитать $\E U_t$, это стандартная задача с теории вероятностей на смесь дискретного и абсолютно непрерывного распределения, нам для этого понадобятся два факта, $(1 - e^{-\lambda u})'_u = \lambda e^{-\lambda u}$ и $P(U_t = t) = e^{-\lambda t}$:
+    \begin{multline*}
+        \E U_t = \int_0^t u \lambda e^{-\lambda u} du + t e^{-\lambda t} = \int_0^t u \cdot d(-e^{-\lambda u}) + t e^{-\lambda t} =
+        \\
+        = (-u e^{-\lambda u}) \Bigr|_0^t - \int_0^t (-e^{-\lambda u}) du + t e^{-\lambda t} = (-u e^{-\lambda u}) \Bigr|_0^t - \ps{\frac{1}{\lambda} e^{-\lambda u}} \Biggr|_0^t + t e^{-\lambda t} =
+        \\
+        = - \cancel{t e^{-\lambda t}} - \frac{1}{\lambda} e^{-\lambda t} + \frac{1}{\lambda} + \cancel{t e^{-\lambda t}} = \frac{1}{\lambda} (1 - e^{-\lambda t})
+    \end{multline*}
+\end{solution}
